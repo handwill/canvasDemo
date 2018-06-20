@@ -21,17 +21,54 @@ Component({
     bgLocalUrl: '',
     exLocalUrl: '',
     artworkImageArr: [],
-    canShow:false,
+    canShow: true,
+    scale:0,
+
+    texts: [{
+      text: '你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
+      color: 'red',           // 文字颜色
+      fontSize: 24,           // 字体 单位rpx
+      textAlign: 'left',      // 对齐方式：left center right
+      x: 0,                   // 坐标x，以文字的右上角为原点，单位rpx
+      y: 0,                   // 坐标y，以文字的右上角为原点，单位rpx
+      width: 560,             // 文字区域的宽度
+      lineNum: 2,             // 文字行数，放不下使用...代替
+      lineHeight: 50,         // 行高 单位rpx
+    },
+    {
+      text: '测试测试测试测试测试测试测试测试测试测试测试测试',
+      color: 'blue',           // 文字颜色
+      fontSize: 32,           // 字体 单位rpx
+      textAlign: 'left',      // 对齐方式：left center right
+      x: 0,                   // 坐标x，以文字的右上角为原点，单位rpx
+      y: 300,                   // 坐标y，以文字的右上角为原点，单位rpx
+      width: 500,             // 文字区域的宽度
+      lineNum: 2,             // 文字行数，放不下使用...代替
+      lineHeight: 50,         // 行高 单位rpx
+    }
+    ],
   },
 
-
-
+  created() {
+    const sysInfo = wx.getSystemInfoSync();
+    const screenWidth = sysInfo.screenWidth;
+    // rpx（responsive pixel）: 规定屏幕宽为750rpx, 所以只需关心rpx即可
+    this.factor = screenWidth / 750;
+  },
+  attached() {
+    // this.ctx = wx.createCanvasContext('myCanvas', this);   // 加上this才能选中组件内的canvas元素
+    // this.setData({
+    //   pxWidth: this.toPx(this.data.width),
+    //   pxHeight: this.toPx(this.data.height),
+    // });
+  },
   /**
    * 组件的方法列表
    */
   methods: {
     // https://img.zai-art.com/zaiart_article%2F55153cb868bcbcde645a8cc640e773aa.jpeg?imageView2/1/w/148/h/200
     handleData: function () {
+
       var that = this;
       wx.getImageInfo({
         src: this.data.data.info.imageUrl + '?imageView2/1/w/375/h/484',
@@ -48,7 +85,7 @@ Component({
           console.log(res)
         }
       })
-      
+
       let artworkW = 108 * 2
       let artworkH = 154 * 2
       if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 1) {
@@ -57,10 +94,10 @@ Component({
       } else if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 2) {
         artworkW = 164 * 2
         artworkH = 164 * 2
-      } 
+      }
 
       let maxLength = (this.data.data.artworks.datas && this.data.data.artworks.datas.length > 3) ? 3 : this.data.data.artworks.datas.length
-      for (let i = 0; i < maxLength ; i++){
+      for (let i = 0; i < maxLength; i++) {
         wx.getImageInfo({
           src: this.data.data.artworks.datas[i].imageUrl + '?imageView2/1/w/' + artworkW + '/h/' + artworkH,
           success: function (res) {
@@ -81,31 +118,25 @@ Component({
         }
       })
 
-      // var that = this
-      // setTimeout(function () {
-
-      //   that.createShareImageAction()
-
-      // }, 2000); 
-      
     },
 
     createShareImageAction: function () {
       this.setData({
-        canShow : true
+        canShow: true
       })
 
       // 默认像素比
       let pixelRatio = this.data.pixelRatio;
       // 屏幕系数比，以设计稿375*667（iphone7）为例
-      let XS = this.data.windowWidth / 375.0 ;
-      
-      let messageContentHeight = 334 *XS 
+      let XS = this.data.windowWidth / 375.0;
+      this.data.scale = XS
 
-      const ctx = wx.createCanvasContext('myCanvas',this)
+      let messageContentHeight = 334 * XS
+
+      const ctx = wx.createCanvasContext('myCanvas', this)
 
 
-      ctx.setFillStyle('#ffffff')
+      ctx.setFillStyle('#7e6d50')
       ctx.fillRect(0, 0, this.data.windowWidth * XS, this.data.windowHeight * XS)
 
       ctx.drawImage(this.data.bgLocalUrl, 0, 0, this.data.windowWidth * XS, 242 * XS)
@@ -116,17 +147,9 @@ Component({
       ctx.drawImage(this.data.exLocalUrl, 10 * XS, 53 * XS, 100 * XS, 137 * XS)
 
       // 展览名称
-      ctx.setFontSize(16 * XS);
-      ctx.setFillStyle('#FFFFFF');
-      ctx.setTextAlign('left');
-      ctx.setTextBaseline('middle');
-      this.fontLineFeed(ctx, this.data.data.info.name, 14, 20 * XS, 122 * XS, 96 * XS);
+      this.drawText(ctx, this.data.data.info.name, 14, 20, 122, 96, 16, '#FFFFFF', 'left', 'middle')
 
-      ctx.setFontSize(12 * XS);
-      ctx.setFillStyle('#FFFFFF');
-      ctx.setTextAlign('left');
-      ctx.setTextBaseline('middle');
-      this.fontLineFeed(ctx, '¥', 13, 12 * XS, 122 * XS, 170 * XS);
+      this.drawText(ctx, '¥', 13, 12, 122, 170, 12, '#FFFFFF', 'left', 'middle')
 
       // 价格
       ctx.setFontSize(24 * XS);
@@ -216,9 +239,9 @@ Component({
       ctx.setTextBaseline('middle');
       this.fontLineFeed(ctx, '2号馆', 30, 14 * XS, 93 * XS, 330 * XS);
 
-      if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 1){
+      if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 1) {
         ctx.drawImage(this.data.artworkImageArr[0], 21 * XS, 365 * XS, 335 * XS, 164 * XS)
-      } else if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 2){
+      } else if (this.data.data.artworks.datas && this.data.data.artworks.datas.length == 2) {
         ctx.drawImage(this.data.artworkImageArr[0], 21 * XS, 365 * XS, 164 * XS, 164 * XS)
         ctx.drawImage(this.data.artworkImageArr[1], 191 * XS, 365 * XS, 164 * XS, 164 * XS)
       } else if (this.data.data.artworks.datas && this.data.data.artworks.datas.length >= 3) {
@@ -261,8 +284,16 @@ Component({
       var that = this
       setTimeout(function () {
         that.saveImage()
-      }, 500); 
+      }, 500);
 
+    },
+
+    drawText: function (ctx, str, splitLen, strHeight, x, y, font, style, align, baseLine) {
+      ctx.setFontSize(font * this.data.scale);
+      ctx.setFillStyle(style);
+      ctx.setTextAlign(align);
+      ctx.setTextBaseline(baseLine);
+      this.fontLineFeed(ctx, str, splitLen * this.data.scale, strHeight * this.data.scale, x * this.data.scale, y * this.data.scale)
     },
     /**
      * ctx,画布对象
@@ -284,9 +315,9 @@ Component({
       }
     },
 
-    saveImage: function(){
+    saveImage: function () {
       var that = this
-      let XS = this.data.windowWidth / 375.0 ;
+      let XS = this.data.windowWidth / 375.0;
       wx.canvasToTempFilePath({
         x: 0,
         y: 0,
@@ -316,7 +347,7 @@ Component({
           console.log(res);
         }
       }, this)
-    }
+    },
   },
 
 

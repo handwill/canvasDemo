@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "img-canvas": "../canvas/canvas"
+  }
+}
