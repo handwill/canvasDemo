@@ -1,0 +1,30 @@
+   /**index.wxss**/
+.share-button {
+  position: fixed;
+  width: 100rpx;
+  height: 100rpx;
+  bottom: 150rpx;
+  right: 30rpx;
+  border-radius: 50rpx;
+  background-color: red;
+  z-index: 200;
+}
+
+ .canvas-content{
+  position: fixed; width:200% ;top: 0; left: 0; height: 100%; 
+} 
+
+.share-image-container{
+  position: fixed; width:200% ;top: 0; left: 0; height: 200%; 
+}
+
+.save-button{
+  position: fixed;
+  width: 100rpx;
+  height: 100rpx;
+  bottom: 150rpx;
+  left: 30rpx;
+  border-radius: 50rpx;
+  background-color: yellow;
+  z-index: 200;
+}

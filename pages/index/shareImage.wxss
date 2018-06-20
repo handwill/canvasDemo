@@ -1,0 +1,10 @@
+/* pages/index/shareImage.wxss */
+.container{
+  width: 100%;
+  height: 100%;
+}
+
+ .container .canvas-content{
+   position: fixed; width:200% ;top: 0; left: 0; height: 200%; 
+    /* transform:scale(0.5);  */
+ }

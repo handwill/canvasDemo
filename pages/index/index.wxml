@@ -1,0 +1,17 @@
+<!--index.wxml-->
+<!-- windowWidth / 375.0 * 667.0 -->
+<view class="container" style='width:750rpx;height:1334rpx;'>
+  <!-- <canvas canvas-id='myCanvas' class='canvas-content' style='height:{{windowHeight * 2}}px;'></canvas> -->
+   <view class='share-image-container'>
+   <!-- <share-image data='{{info}}'></share-image> -->
+</view> 
+
+</view>
+
+
+
+<view class='share-button' >
+ <share-image data='{{info}}'></share-image> 
+</view>
+
+<view class='save-button' bindtap='saveImage'></view>

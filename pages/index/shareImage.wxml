@@ -1,0 +1,7 @@
+<!--pages/index/shareImage.wxml-->
+<view class='container' bindtap='createShareImageAction' >
+   <canvas canvas-id='myCanvas' class='canvas-content' style='' wx:if='{{canShow}}'></canvas>
+
+</view>
+
+
