@@ -1,0 +1,6 @@
+<!--pages/main/share.wxml-->
+<canvas canvas-id='myCanvas' class='canvas-content' style='height:{{totalHeight * canvasScale}}px;width:{{375*canvasScale}}px'>
+  <cover-view class='save-button' bindtap='saveImage'>
+    <cover-image src="../../img/icon_download_image.png" class="share-image"></cover-image>
+  </cover-view>
+</canvas>

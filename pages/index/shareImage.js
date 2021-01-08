@@ -151,7 +151,7 @@ Component({
 
       this.drawText(ctx, '¥', 13, 12, 122, 170, 12, '#FFFFFF', 'left', 'middle')
 
-      // 价格
+      // 价格 
       ctx.setFontSize(24 * XS);
       ctx.setFillStyle('#FFFFFF');
       ctx.setTextAlign('left');
